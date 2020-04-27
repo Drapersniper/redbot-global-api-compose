@@ -17,8 +17,8 @@ services:
               "PythonHomeDir", "/opt/redislabs/lib/modules/python3"]
     env_file:
       - .env
-    networks:
-      - redaudioapi-net
+    redaudioapi-net:
+      ipv4_address: 172.40.0.2
     image: redislabs/redismod
     volumes:
       - ./data/redis:/data
@@ -32,8 +32,8 @@ services:
       - .env
     volumes:
       - redaudioapi-pgdata:/var/lib/postgresql/data # Run `docker volume create --name=redaudioapi-pgdata`
-    networks:
-      - redaudioapi-net
+    redaudioapi-net:
+      ipv4_address: 172.40.0.3
     restart: unless-stopped
 
   pgadmin:
@@ -44,8 +44,8 @@ services:
       - .env
     volumes:
        - ./data/pgadmin:/root/.pgadmin
-    networks:
-      - redaudioapi-net
+    redaudioapi-net:
+      ipv4_address: 172.40.0.4
     restart: unless-stopped
 
   api:
@@ -60,7 +60,7 @@ services:
       REDIS_CACHED_DATA: redis://redaudioapi-redis
     networks:
       redaudioapi-net:
-        ipv4_address: 172.40.0.2
+        ipv4_address: 172.40.0.5
     depends_on:
       - postgres
       - redis
@@ -82,8 +82,8 @@ services:
       - ./data/backups:/backups
     links:
       - postgres:postgres
-    networks:
-      - redaudioapi-net
+    redaudioapi-net:
+      ipv4_address: 172.40.0.6
     environment:
       - POSTGRES_HOST=redaudioapi-postgres
 
