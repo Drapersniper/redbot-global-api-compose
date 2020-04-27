@@ -59,7 +59,8 @@ services:
       RED_API_DATABASE: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@redaudioapi-postgres/${POSTGRES_DB}
       REDIS_CACHED_DATA: redis://redaudioapi-redis
     networks:
-      - redaudioapi-net
+      redaudioapi-net:
+        ipv4_address: 172.40.0.2
     depends_on:
       - postgres
       - redis
@@ -89,6 +90,9 @@ services:
 networks:
   redaudioapi-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/16
 
 volumes:
   redaudioapi-pgdata:
