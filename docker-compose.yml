@@ -73,7 +73,6 @@ services:
     container_name: redaudioapi-pgbackup
     hostname: redaudioapi-pgbackup
     image: kartoza/pg-backup:9.6
-    hostname: redaudioapi-pgbackup
     env_file:
       - .env
     depends_on:
