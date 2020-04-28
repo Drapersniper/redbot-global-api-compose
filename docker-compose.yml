@@ -33,6 +33,7 @@ services:
       - .env
     volumes:
       - redaudioapi-pgdata:/var/lib/postgresql/data # Run `docker volume create --name=redaudioapi-pgdata`
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     networks:
       redaudioapi-net:
         ipv4_address: 172.40.0.3
