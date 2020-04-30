@@ -123,7 +123,7 @@ services:
     container_name: redaudioapi-es02
     hostname: redaudioapi-es02
     environment:
-      node.name=redaudioapi-es02
+      - node.name=redaudioapi-es02
       - cluster.name=es-redaudioapi-es-cluster
       - discovery.seed_hosts=redaudioapi-es01,redaudioapi-es03
       - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
