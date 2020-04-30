@@ -113,8 +113,6 @@ services:
         hard: -1
     volumes:
       - redaudioapies01:/usr/share/elasticsearch/data
-    ports:
-      - 127.0.0.1:9200:9200
     networks:
       redaudioapi-net:
         ipv4_address: 172.40.0.7
