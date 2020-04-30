@@ -62,7 +62,9 @@ services:
     environment:
       RED_API_DATABASE: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@redaudioapi-postgres/${POSTGRES_DB}
       REDIS_CACHED_DATA: redis://redaudioapi-redis
+      ES_CLUTER: 172.40.0.7:9200
     networks:
+      default:
       redaudioapi-net:
         ipv4_address: 172.40.0.5
     depends_on:
@@ -91,6 +93,76 @@ services:
     environment:
       - POSTGRES_HOST=redaudioapi-postgres
 
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: redaudioapi-es01
+    hostname: redaudioapi-es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=redaudioapi-es02,redaudioapi-es03
+      - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    depends_on:
+      - postgres
+      - redis
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - redaudioapies01:/usr/share/elasticsearch/data
+    ports:
+      - 127.0.0.1:9200:9200
+    networks:
+      redaudioapi-net:
+        ipv4_address: 172.40.0.7
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: redaudioapi-es02
+    hostname: redaudioapi-es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=redaudioapi-es01,redaudioapi-es03
+      - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - redaudioapies02:/usr/share/elasticsearch/data
+    networks:
+      redaudioapi-net:
+        ipv4_address: 172.40.0.8
+    depends_on:
+      - es01
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: redaudioapi-es03
+    hostname: redaudioapi-es03
+    environment:
+      - node.name=redaudioapi-es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=redaudioapi-es01,redaudioapi-es02
+      - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - redaudioapies03:/usr/share/elasticsearch/data
+    networks:
+      redaudioapi-net:
+        ipv4_address: 172.40.0.9
+    depends_on:
+      - es02
+
 networks:
   redaudioapi-net:
     driver: bridge
@@ -101,3 +173,9 @@ networks:
 volumes:
   redaudioapi-pgdata:
     external: true
+  redaudioapies01:
+    driver: local
+  redaudioapies02:
+    driver: local
+  redaudioapies03:
+    driver: local
