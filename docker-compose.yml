@@ -99,8 +99,8 @@ services:
     container_name: redaudioapi-es01
     hostname: redaudioapi-es01
     environment:
-      - node.name=es01
-      - cluster.name=es-docker-cluster
+      - node.name=redaudioapi-es01
+      - cluster.name=es-redaudioapi-es-cluster
       - discovery.seed_hosts=redaudioapi-es02,redaudioapi-es03
       - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
       - bootstrap.memory_lock=true
@@ -124,8 +124,8 @@ services:
     container_name: redaudioapi-es02
     hostname: redaudioapi-es02
     environment:
-      - node.name=es02
-      - cluster.name=es-docker-cluster
+      node.name=redaudioapi-es02
+      - cluster.name=es-redaudioapi-es-cluster
       - discovery.seed_hosts=redaudioapi-es01,redaudioapi-es03
       - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
       - bootstrap.memory_lock=true
@@ -146,8 +146,8 @@ services:
     container_name: redaudioapi-es03
     hostname: redaudioapi-es03
     environment:
-      - node.name=redaudioapi-es03
-      - cluster.name=es-docker-cluster
+      - node.name=redaudioapi-es02
+      - cluster.name=es-redaudioapi-es-cluster
       - discovery.seed_hosts=redaudioapi-es01,redaudioapi-es02
       - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
       - bootstrap.memory_lock=true
