@@ -62,7 +62,7 @@ services:
     environment:
       RED_API_DATABASE: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@redaudioapi-postgres/${POSTGRES_DB}
       REDIS_CACHED_DATA: redis://redaudioapi-redis
-      ES_CLUTER: 172.40.0.7:9200
+      ES_CLUSTER: 172.40.0.7:9200
     networks:
       default:
       redaudioapi-net:
