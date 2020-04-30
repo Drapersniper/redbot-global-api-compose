@@ -74,6 +74,7 @@ services:
     links:
       - redis
       - postgres
+      - es03
 
   pgbackup:
     container_name: redaudioapi-pgbackup
