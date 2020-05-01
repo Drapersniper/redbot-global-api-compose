@@ -7,6 +7,7 @@ services:
     command: ["--appendonly", "yes",
               "--maxmemory", "2g",
               "--maxmemory-policy","allkeys-lru",
+              "--maxclients", "20000",
               "--loadmodule", "/usr/lib/redis/modules/redisai.so",
               "--loadmodule", "/usr/lib/redis/modules/redisearch.so",
               "--loadmodule", "/usr/lib/redis/modules/redisgraph.so",
@@ -17,6 +18,10 @@ services:
               "PythonHomeDir", "/opt/redislabs/lib/modules/python3"]
     env_file:
       - .env
+    ulimits:
+      nofile:
+        soft: "65536"
+        hard: "65536"
     networks:
       redaudioapi-net:
         ipv4_address: 172.40.0.2
@@ -34,6 +39,10 @@ services:
     volumes:
       - redaudioapi-pgdata:/var/lib/postgresql/data # Run `docker volume create --name=redaudioapi-pgdata`
       - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    ulimits:
+      nofile:
+        soft: "65536"
+        hard: "65536"
     networks:
       redaudioapi-net:
         ipv4_address: 172.40.0.3
@@ -112,6 +121,9 @@ services:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: "65536"
+        hard: "65536"
     volumes:
       - redaudioapies01:/usr/share/elasticsearch/data
     networks:
@@ -132,6 +144,9 @@ services:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: "65536"
+        hard: "65536"
     volumes:
       - redaudioapies02:/usr/share/elasticsearch/data
     networks:
@@ -154,6 +169,9 @@ services:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: "65536"
+        hard: "65536"
     volumes:
       - redaudioapies03:/usr/share/elasticsearch/data
     networks:
