@@ -8,6 +8,7 @@ services:
               "--maxmemory", "2g",
               "--maxmemory-policy","allkeys-lru",
               "--maxclients", "20000",
+              "--timeout", "30",
               "--loadmodule", "/usr/lib/redis/modules/redisai.so",
               "--loadmodule", "/usr/lib/redis/modules/redisearch.so",
               "--loadmodule", "/usr/lib/redis/modules/redisgraph.so",
