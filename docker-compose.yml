@@ -30,6 +30,7 @@ services:
     volumes:
       - ./data/redis:/data
     restart: unless-stopped
+    user: 1003
 
   postgres:
     container_name: redaudioapi-postgres
@@ -48,6 +49,7 @@ services:
       redaudioapi-net:
         ipv4_address: 172.40.0.3
     restart: unless-stopped
+    user: 1003
 
   pgadmin:
     container_name: redaudioapi-pgadmin
@@ -61,6 +63,7 @@ services:
       redaudioapi-net:
         ipv4_address: 172.40.0.4
     restart: unless-stopped
+    user: 1003
 
   api:
     container_name: redaudioapi-api
@@ -85,6 +88,7 @@ services:
       - redis
       - postgres
       - es03
+    user: 1003
 
   pgbackup:
     container_name: redaudioapi-pgbackup
@@ -103,6 +107,7 @@ services:
         ipv4_address: 172.40.0.6
     environment:
       - POSTGRES_HOST=redaudioapi-postgres
+    user: 1003
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
@@ -130,6 +135,7 @@ services:
     networks:
       redaudioapi-net:
         ipv4_address: 172.40.0.7
+    user: 1003
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
     container_name: redaudioapi-es02
@@ -155,10 +161,12 @@ services:
         ipv4_address: 172.40.0.8
     depends_on:
       - es01
+    user: 1003
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
     container_name: redaudioapi-es03
     hostname: redaudioapi-es03
+
     environment:
       - node.name=redaudioapi-es02
       - cluster.name=es-redaudioapi-es-cluster
@@ -166,6 +174,7 @@ services:
       - cluster.initial_master_nodes=redaudioapi-es01,redaudioapi-es02,redaudioapi-es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
+    user: 1003
     ulimits:
       memlock:
         soft: -1
